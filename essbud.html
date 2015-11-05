@@ -1,0 +1,185 @@
+<head>
+  <title>The essBud!</title>
+</head>
+ 
+<body>
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">The essBud!</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+  <div class="container-fluid">
+  	<div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+        {{> Navigation}}
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        	<div class="Overview">
+        		<h2>Overview</h2>
+        		Welcome to essBud! (ESS Budgeting App). This app manages your monthly budget / allowances.
+        	</div>
+          	{{> findPeriodForm}}
+		 	{{> addPeriodForm}}
+		 	{{> addAssetForm}}
+		 	{{> addExpenseForm}}
+		 </div>
+	 </div>
+  </div>
+</body>
+<template name="Navigation">
+	<ul class="nav nav-sidebar">
+	    <li class="active" id="Overview"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+	    <li><a href="#" id="Home">View My Budget</a></li>
+	    <li><a href="#" id="Period">Manage my Schedules</a></li>
+	    <li><a href="#" id="Asset">Manage My Assets</a></li>
+	    <li><a href="#" id="Expense">Manage My Expenses</a></li>
+  	</ul>
+</template>
+ <template name="findPeriodForm">
+ 	<div class="findPeriod">
+		<form>
+		<h2>Schedule</h2>
+		<select id="periodList">
+		    {{#each periods}}
+		          <option value="{{period_code}}">{{period_code}}</option>
+		    {{/each}}
+	  	</select>
+		<h2 class="sub-header">Assets</h2>
+		<div class="table-responsive">
+	    <table class="table table-striped" id="assetTbl">
+	      <tbody>
+	      </tbody>
+	     </table>
+	    </div>
+		<h2 class="sub-header">Expenses</h2>
+		<div class="table-responsive">
+		    <table class="table table-striped" id="expenseTbl">
+		      <tbody>
+		      </tbody>
+		     </table>
+	    </div>
+		</form>
+	</div>
+</template>
+
+<template name="addPeriodForm">
+	<div class="addPeriod">
+		<form>
+			<h3>Add a Schedule</h3>
+			<table class="table table-striped" id="expenseTbl">
+		      <thead>
+		        <tr>
+		          <th>Field</th>
+		          <th>Value</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		            <tr>
+		              <td>Code</td>
+                      <td><input type="text" name="periodCode"></td>
+		            </tr>
+		            <tr>
+		              <td></td>
+                      <td><input type="submit" value="Add Period"></td>
+		            </tr>
+		      </tbody>
+		    </table>
+		</form>
+	</div>
+</template>
+<template name="addAssetForm">
+	<div class="addAsset">
+		<form>
+			<h3>Add an Asset</h3>
+			<table class="table table-striped">
+		      <thead>
+		        <tr>
+		          <th>Field</th>
+		          <th>Value</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		            <tr>
+		              <td>Schedule</td>
+                      <td><select name="periodCode">
+						    	{{#each periods}}
+						          <option value="{{period_id}}">{{period_code}}</option>
+						    	{{/each}}
+					  		</select>
+					  </td>
+		            </tr>
+					<tr>
+		              <td>Code</td>
+                      <td><input type="text" name="assetCode"></td>
+		            </tr>		            
+		            <tr>
+		              <td>Amount</td>
+                      <td><input type="text" name="assetAmount"></td>
+		            </tr>
+		            <tr>
+		              <td></td>
+                      <td><input type="submit" value="Add Asset"></td>
+		            </tr>
+		      </tbody>
+		    </table>
+		</form>
+	</div>
+</template>
+<template name="addExpenseForm">
+	<div class="addExpense">
+		<form>
+			<h3>Add an Expense</h3>
+			<table class="table table-striped">
+		      <thead>
+		        <tr>
+		          <th>Field</th>
+		          <th>Value</th>
+		        </tr>
+		      </thead>
+		      <tbody>
+		            <tr>
+		              <td>Schedule</td>
+                      <td><select name="periodCode">
+						    	{{#each periods}}
+						          <option value="{{period_id}}">{{period_code}}</option>
+						    	{{/each}}
+					  		</select>
+					  </td>
+		            </tr>
+					<tr>
+		              <td>Code</td>
+                      <td><input type="text" name="expenseCode"></td>
+		            </tr>		            
+		            <tr>
+		              <td>Amount</td>
+                      <td><input type="text" name="expenseAmount"></td>
+		            </tr>
+		            <tr>
+		              <td></td>
+                      <td><input type="submit" value="Add Expense"></td>
+		            </tr>
+		      </tbody>
+		    </table>		
+		</form>
+	</div>
+</template>
