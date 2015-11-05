@@ -63,6 +63,10 @@ Expenses = new Meteor.Collection('expenses');
     Template.findPeriodForm.events({
     'change #periodList': function(evt) {
         $("#assetTbl tr, #expenseTbl tr").remove();
+        
+        var totalAssets = 0;
+        var totalExpenses = 0;
+        var intSavings = 0;
         var thecode = $(evt.target).val();
         var periods = Periods.find({
           period_code : thecode
@@ -74,21 +78,28 @@ Expenses = new Meteor.Collection('expenses');
         var assets = Assets.find({
             period_id : periodId
           }).fetch();
+
         $("#assetTbl, #expenseTbl").prepend("<thead><tr><th>Code</th><th>Amount (Php)</th></tr></thead>");
+        
         assets.forEach(function(doc){
-            $("#assetTbl").append("<tr><td id='" + doc.period_id + "'>" + doc.asset_code + "</td><td>" + doc.asset_amount + "</td></tr>");
+            $("#assetTbl").append("<tr data-id='" + doc.asset_code + "'><td>" + doc.asset_code + "</td><td>" + doc.asset_amount + "</td></tr>");
+            totalAssets += parseInt(doc.asset_amount);
           });
 
         var expenses = Expenses.find({
             period_id : periodId
           }).fetch();
+        
         expenses.forEach(function(doc){
             $("#expenseTbl").append("<tr><td id='" + doc.period_id + "'>" + doc.expense_code + "</td><td>" + doc.expense_amount + "</td></tr>");
+            totalExpenses += parseInt(doc.expense_amount);
           });
+        intSavings = totalAssets - totalExpenses;
+        $("#savings").empty();
+        $("#savings").append("<p><B>Php " + intSavings + "</B></p>");
       },
-      'click #assetTbl tr td': function(evt) {
-        console.log($(this).attr('id'));
-        console.log(this.id);
+      'click #assetTbl tr': function(evt) {
+        console.log($(this));
       }
     });
     Template.Navigation.events({
