@@ -1,6 +1,8 @@
 Periods = new Meteor.Collection('periods');
 Assets = new Meteor.Collection('assets');
 Expenses = new Meteor.Collection('expenses');
+AssetData = {};
+ExpenseData = {};
 
   if (Meteor.isClient)
   {
@@ -60,6 +62,7 @@ Expenses = new Meteor.Collection('expenses');
         return Periods.find();
       }
     });
+    
     Template.findPeriodForm.events({
     'change #periodList': function(evt) {
         $("#assetTbl tr, #expenseTbl tr").remove();
@@ -71,37 +74,64 @@ Expenses = new Meteor.Collection('expenses');
         var periods = Periods.find({
           period_code : thecode
         }).fetch();
+        
+        
         periods.forEach(function(doc){
           periodId = doc.period_id;
+          AssetData.periodId = doc.period_id;;
         });
         
         var assets = Assets.find({
             period_id : periodId
           }).fetch();
+        AssetData = assets;
 
         $("#assetTbl, #expenseTbl").prepend("<thead><tr><th>Code</th><th>Amount (Php)</th></tr></thead>");
         
-        assets.forEach(function(doc){
+        /*assets.forEach(function(doc){
             $("#assetTbl").append("<tr data-id='" + doc.asset_code + "'><td>" + doc.asset_code + "</td><td>" + doc.asset_amount + "</td></tr>");
             totalAssets += parseInt(doc.asset_amount);
           });
+        */
 
         var expenses = Expenses.find({
             period_id : periodId
           }).fetch();
-        
-        expenses.forEach(function(doc){
+        ExpenseData = expenses;        
+        /*expenses.forEach(function(doc){
             $("#expenseTbl").append("<tr><td id='" + doc.period_id + "'>" + doc.expense_code + "</td><td>" + doc.expense_amount + "</td></tr>");
             totalExpenses += parseInt(doc.expense_amount);
           });
+        */
         intSavings = totalAssets - totalExpenses;
         $("#savings").empty();
         $("#savings").append("<p><B>Php " + intSavings + "</B></p>");
-      },
-      'click #assetTbl tr': function(evt) {
-        console.log($(this));
       }
     });
+    
+    Template.assetForm.helpers({
+      assetArr: function() {
+        return $.map(AssetData, function(el) { return el });
+      }
+    });
+    
+    Template.assetForm.events({
+      'click': function() {
+        console.log(this._id);
+      }
+    });
+
+    Template.expenseForm.helpers({
+      expenseArr: function() {
+        return $.map(ExpenseData, function(el) { return el });
+      }
+    });
+    Template.expenseForm.events({
+      'click': function() {
+        console.log(this._id);
+      }
+    });
+
     Template.Navigation.events({
       'click #Overview': function() {
         $(".Overview").show();
@@ -131,3 +161,5 @@ if (Meteor.isServer) {
   });
 }
 
+
+      

@@ -39,6 +39,8 @@
         		Welcome to essBud! (ESS Budgeting App). This app manages your monthly budget / allowances.
         	</div>
           	{{> findPeriodForm}}
+          	{{> assetForm}}
+          	{{> expenseForm}}
 		 	{{> addPeriodForm}}
 		 	{{> addAssetForm}}
 		 	{{> addExpenseForm}}
@@ -55,35 +57,44 @@
 	    <li><a href="#" id="Expense">Manage My Expenses</a></li>
   	</ul>
 </template>
- <template name="findPeriodForm">
+<template name="findPeriodForm">
  	<div class="findPeriod">
 		<form>
-		<h2>Schedule</h2>
-		<select id="periodList">
-		    {{#each periods}}
-		          <option value="{{period_code}}">{{period_code}}</option>
-		    {{/each}}
-	  	</select>
-		<h2 class="sub-header">Assets</h2>
-		<div class="table-responsive">
-	    <table class="table table-striped" id="assetTbl">
-	      <tbody>
-	      </tbody>
-	     </table>
-	    </div>
+			<h2>Schedule</h2>
+			<select id="periodList">
+			    {{#each periods}}
+			          <option value="{{period_code}}">{{period_code}}</option>
+			    {{/each}}
+		  	</select>
+		</form>
+	</div>
+</template>
+<template name="assetForm">
+	<h2 class="sub-header">Assets</h2>
+	<div class="table-responsive">
+    <table class="table table-striped" id="assetTbl">
+      <tbody>
+      {{#each assetArr}}
+			<tr data-id="{{asset_code}}"><td>{{asset_code}}</td><td>{{asset_amount}}</td></tr>
+	  {{/each}}
+      </tbody>
+     </table>
+    </div>
+</template>
+<template name="expenseForm">
 		<h2 class="sub-header">Expenses</h2>
 		<div class="table-responsive">
 		    <table class="table table-striped" id="expenseTbl">
 		      <tbody>
+      {{#each expenseArr}}
+			<tr data-id="{{expense_code}}"><td>{{expense_code}}</td><td>{{expense_amount}}</td></tr>
+	  {{/each}}
 		      </tbody>
 		     </table>
 	    </div>
 	    <h2 class="sub-header">Savings</h2>
 	    <div id="savings"></div>
-		</form>
-	</div>
 </template>
-
 <template name="addPeriodForm">
 	<div class="addPeriod">
 		<form>
