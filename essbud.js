@@ -9,12 +9,12 @@ ExpenseData = {};
     
     Template.addAssetForm.helpers({
       periods: function() {
-        return Periods.find({}, {sort: {createdAt: -1}});
+        return Periods.find({}, {sort: {createdAt: 1}});
       }
     });
     Template.addExpenseForm.helpers({
       periods: function() {
-        return Periods.find({}, {sort: {createdAt: -1}});
+        return Periods.find({}, {sort: {createdAt: 1}});
       }
     });
     Template.addAssetForm.events({
@@ -119,19 +119,19 @@ ExpenseData = {};
     Template.Navigation.events({
       'click #Overview': function() {
         $(".Overview").show();
-        $(".findPeriod, .addExpense, .addAsset").hide();
+        $(".findPeriod, .addExpense, .addAsset, .Assets, .Expenses").hide();
       },
       'click #Home': function() {
-        $(".findPeriod").show();
+        $(".findPeriod, .Assets, .Expenses").show();
         $(".Overview, .addExpense, .addAsset").hide();
       },
       'click #Asset': function() {
           $(".addAsset").show();
-          $(".Overview, .addExpense, .findPeriod").hide();
+          $(".Overview, .addExpense, .findPeriod, .Assets, .Expenses").hide();
       },
       'click #Expense': function() {
           $(".addExpense").show();
-          $(".Overview, .findPeriod, .addAsset").hide();
+          $(".Overview, .findPeriod, .addAsset, .Assets, .Expenses").hide();
       }
     });
 }

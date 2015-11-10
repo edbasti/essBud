@@ -51,7 +51,6 @@
 	<ul class="nav nav-sidebar">
 	    <li class="active" id="Overview"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
 	    <li><a href="#" id="Home">View My Budget</a></li>
-	    <li><a href="#" id="Period">Manage my Schedules</a></li>
 	    <li><a href="#" id="Asset">Manage My Assets</a></li>
 	    <li><a href="#" id="Expense">Manage My Expenses</a></li>
   	</ul>
@@ -69,31 +68,35 @@
 	</div>
 </template>
 <template name="assetForm">
-	<h2 class="sub-header">Assets</h2>
-	<div class="table-responsive">
-    <table class="table table-striped" id="assetTbl">
-      <tbody>
-      {{#each assetArr}}
-			{{>assets}}
-	  {{/each}}
-      </tbody>
-     </table>
-    </div>
+	<div class="Assets">
+		<h2 class="sub-header">Assets</h2>
+		<div class="table-responsive">
+	    <table class="table table-striped" id="assetTbl">
+	      <tbody>
+	      {{#each assetArr}}
+				{{>assets}}
+		  {{/each}}
+	      </tbody>
+	     </table>
+	    </div>
+	  </div>
 </template>
 <template name="assets">
 	<tr data-id="{{asset_code}}"><td>{{asset_code}}</td><td><input type="number" value="{{asset_amount}}" name="assetItem"></td><td>[<a href="#" class="deleteAsset">Delete</a>]</td></tr>
 </template>
 <template name="expenseForm">
-	<h2 class="sub-header">Expenses</h2>
-	<div class="table-responsive">
-    <table class="table table-striped" id="expenseTbl">
-      <tbody>
-      {{#each expenseArr}}
-			{{>expenses}}
-	  {{/each}}
-      </tbody>
-     </table>
-    </div>
+	<div class="Expenses">
+		<h2 class="sub-header">Expenses</h2>
+		<div class="table-responsive">
+	    <table class="table table-striped" id="expenseTbl">
+	      <tbody>
+	      {{#each expenseArr}}
+				{{>expenses}}
+		  {{/each}}
+	      </tbody>
+	     </table>
+	    </div>
+	 </div>
 </template>
 <template name="expenses">
 	<tr data-id="{{expense_code}}"><td>{{expense_code}}</td><td><input type="number" value="{{expense_amount}}" name="expenseItem"></td><td>[<a href="#" class="deleteExpense">Delete</a>]</td></tr>
