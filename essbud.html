@@ -41,7 +41,6 @@
           	{{> findPeriodForm}}
           	{{> assetForm}}
           	{{> expenseForm}}
-		 	{{> addPeriodForm}}
 		 	{{> addAssetForm}}
 		 	{{> addExpenseForm}}
 		 </div>
@@ -63,7 +62,7 @@
 			<h2>Schedule</h2>
 			<select id="periodList">
 			    {{#each periods}}
-			          <option value="{{period_code}}">{{period_code}}</option>
+			          <option value="{{period_id}}">{{period_code}}</option>
 			    {{/each}}
 		  	</select>
 		</form>
@@ -75,50 +74,29 @@
     <table class="table table-striped" id="assetTbl">
       <tbody>
       {{#each assetArr}}
-			<tr data-id="{{asset_code}}"><td>{{asset_code}}</td><td>{{asset_amount}}</td></tr>
+			{{>assets}}
 	  {{/each}}
       </tbody>
      </table>
     </div>
 </template>
-<template name="expenseForm">
-		<h2 class="sub-header">Expenses</h2>
-		<div class="table-responsive">
-		    <table class="table table-striped" id="expenseTbl">
-		      <tbody>
-      {{#each expenseArr}}
-			<tr data-id="{{expense_code}}"><td>{{expense_code}}</td><td>{{expense_amount}}</td></tr>
-	  {{/each}}
-		      </tbody>
-		     </table>
-	    </div>
-	    <h2 class="sub-header">Savings</h2>
-	    <div id="savings"></div>
+<template name="assets">
+	<tr data-id="{{asset_code}}"><td>{{asset_code}}</td><td><input type="number" value="{{asset_amount}}" name="assetItem"></td><td>[<a href="#" class="deleteAsset">Delete</a>]</td></tr>
 </template>
-<template name="addPeriodForm">
-	<div class="addPeriod">
-		<form>
-			<h3>Add a Schedule</h3>
-			<table class="table table-striped" id="expenseTbl">
-		      <thead>
-		        <tr>
-		          <th>Field</th>
-		          <th>Value</th>
-		        </tr>
-		      </thead>
-		      <tbody>
-		            <tr>
-		              <td>Code</td>
-                      <td><input type="text" name="periodCode"></td>
-		            </tr>
-		            <tr>
-		              <td></td>
-                      <td><input type="submit" value="Add Period"></td>
-		            </tr>
-		      </tbody>
-		    </table>
-		</form>
-	</div>
+<template name="expenseForm">
+	<h2 class="sub-header">Expenses</h2>
+	<div class="table-responsive">
+    <table class="table table-striped" id="expenseTbl">
+      <tbody>
+      {{#each expenseArr}}
+			{{>expenses}}
+	  {{/each}}
+      </tbody>
+     </table>
+    </div>
+</template>
+<template name="expenses">
+	<tr data-id="{{expense_code}}"><td>{{expense_code}}</td><td><input type="number" value="{{expense_amount}}" name="expenseItem"></td><td>[<a href="#" class="deleteExpense">Delete</a>]</td></tr>
 </template>
 <template name="addAssetForm">
 	<div class="addAsset">
