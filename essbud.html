@@ -3,6 +3,8 @@
 </head>
  
 <body>
+</body>
+<template name="main">
 	<nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -31,29 +33,27 @@
   <div class="container-fluid">
   	<div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-        {{> Navigation}}
+		{{> Navigation}}		
         </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        	<div class="Overview">
-        		<h2>Overview</h2>
-        		Welcome to essBud! (ESS Budgeting App). This app manages your monthly budget / allowances.
-        	</div>
-          	{{> findPeriodForm}}
-          	{{> assetForm}}
-          	{{> expenseForm}}
-		 	{{> addAssetForm}}
-		 	{{> addExpenseForm}}
+        {{> yield}}	
 		 </div>
 	 </div>
   </div>
-</body>
+ </template>
 <template name="Navigation">
 	<ul class="nav nav-sidebar">
-	    <li class="active" id="Overview"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-	    <li><a href="#" id="Home">View My Budget</a></li>
-	    <li><a href="#" id="Asset">Manage My Assets</a></li>
-	    <li><a href="#" id="Expense">Manage My Expenses</a></li>
+	    <li class="active" id="Overview"><a href="{{pathFor route='Overview'}}">Overview <span class="sr-only">(current)</span></a></li>
+	    <li><a href="{{pathFor route='findPeriodForm'}}" id="Home">View My Budget</a></li>
+	    <li><a href="{{pathFor route='addAssetForm'}}" id="Asset">Manage My Assets</a></li>
+	    <li><a href="{{pathFor route='addExpenseForm'}}" id="Expense">Manage My Expenses</a></li>
   	</ul>
+</template>
+<template name="Overview">
+	<div class="Overview">
+		<h2>Overview</h2>
+		Welcome to essBud! (ESS Budgeting App). This app manages your monthly budget / allowances.
+	</div>
 </template>
 <template name="findPeriodForm">
  	<div class="findPeriod">
@@ -66,41 +66,33 @@
 		  	</select>
 		</form>
 	</div>
-</template>
-<template name="assetForm">
 	<div class="Assets">
-		<h2 class="sub-header">Assets</h2>
+		<h2 class="sub-header">Assets (Php{{totalAssetAmt}})</h2>
 		<div class="table-responsive">
 	    <table class="table table-striped" id="assetTbl">
 	      <tbody>
 	      {{#each assetArr}}
-				{{>assets}}
+				<tr data-id="{{asset_code}}"><td>{{asset_code}}</td><td><input type="number" value="{{asset_amount}}" name="assetItem"></td><td>[<a href="#" class="deleteAsset">Delete</a>]</td></tr>
 		  {{/each}}
 	      </tbody>
 	     </table>
 	    </div>
 	  </div>
-</template>
-<template name="assets">
-	<tr data-id="{{asset_code}}"><td>{{asset_code}}</td><td><input type="number" value="{{asset_amount}}" name="assetItem"></td><td>[<a href="#" class="deleteAsset">Delete</a>]</td></tr>
-</template>
-<template name="expenseForm">
-	<div class="Expenses">
-		<h2 class="sub-header">Expenses</h2>
+	  <div class="Expenses">
+		<h2 class="sub-header">Expenses (Php{{totalExpenseAmt}})</h2>
 		<div class="table-responsive">
 	    <table class="table table-striped" id="expenseTbl">
 	      <tbody>
 	      {{#each expenseArr}}
-				{{>expenses}}
+				<tr data-id="{{expense_code}}"><td>{{expense_code}}</td><td><input type="number" value="{{expense_amount}}" name="expenseItem"></td><td>[<a href="#" class="deleteExpense">Delete</a>]</td></tr>
 		  {{/each}}
 	      </tbody>
 	     </table>
+		<h3>Current Savings Php{{totalSavingsAmt}}</h3>
 	    </div>
 	 </div>
 </template>
-<template name="expenses">
-	<tr data-id="{{expense_code}}"><td>{{expense_code}}</td><td><input type="number" value="{{expense_amount}}" name="expenseItem"></td><td>[<a href="#" class="deleteExpense">Delete</a>]</td></tr>
-</template>
+
 <template name="addAssetForm">
 	<div class="addAsset">
 		<form>

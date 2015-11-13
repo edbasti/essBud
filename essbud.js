@@ -4,6 +4,11 @@ Expenses = new Meteor.Collection('expenses');
 AssetData = {};
 ExpenseData = {};
 
+totalAssets = 0;
+totalExpenses = 0;
+intSavings = 0;
+
+
   if (Meteor.isClient)
   {
     
@@ -54,32 +59,55 @@ ExpenseData = {};
     Template.findPeriodForm.helpers({
       periods: function() {
         return Periods.find();
-      }
-    });
-    
-    Template.findPeriodForm.events({
-    'change #periodList': function(evt) {
-        $("#assetTbl tr, #expenseTbl tr").remove();
-        
-        var totalAssets = 0;
-        var totalExpenses = 0;
-        var intSavings = 0;
-        var theid = $(evt.target).val();
-        Session.set('theid', theid);
-      }
-    });
-    
-    Template.assetForm.helpers({
-      assetArr: function() {
+      },
+       assetArr: function() {
+        intAssetAmt = 0;
         theId = parseInt(Session.get('theid'));
         var assets = Assets.find({
             period_id : theId
           }, {sort: {createdAt: -1}}).fetch();
+        
+        assets.forEach(function (row)
+          {
+            
+            intAssetAmt += parseInt(row.asset_amount);
+          });
+        Session.set('totalAssets', intAssetAmt);
         return assets;
+      },
+      expenseArr: function() {
+        intExpenseAmt = 0;
+        theId = parseInt(Session.get('theid'));
+        var expenses = Expenses.find({
+            period_id : theId
+          }).fetch();
+        expenses.forEach(function (row)
+          {
+            intExpenseAmt += parseInt(row.expense_amount);
+          });
+        Session.set('totalExpenses', intExpenseAmt);
+        
+        return expenses;
+
+      },
+      totalAssetAmt: function() {
+        return Session.get('totalAssets');
+      },
+      totalExpenseAmt: function() {
+        return Session.get('totalExpenses');
+      },
+      totalSavingsAmt: function() {
+        return Session.get('totalAssets') - Session.get('totalExpenses');
       }
     });
     
-    Template.assetForm.events({
+    Template.findPeriodForm.events({
+      'change #periodList': function(evt) {
+        $("#assetTbl tr, #expenseTbl tr").remove();
+        
+        var theid = $(evt.target).val();
+        Session.set('theid', theid);
+      },
       'click .deleteAsset': function() {
         var documentId = this._id;
         Assets.remove({ _id: documentId });
@@ -88,22 +116,7 @@ ExpenseData = {};
         var documentId = this._id;
         var assetItem = $(event.target).val();
         Assets.update({ _id: documentId }, {$set: { name: assetItem }});
-        console.log("Task changed to: " + documentId + ', ' + assetItem);
-      }
-    });
-
-    Template.expenseForm.helpers({
-      expenseArr: function() {
-        theId = parseInt(Session.get('theid'));
-        var expenses = Expenses.find({
-            period_id : theId
-          }).fetch();
-        return expenses;
-
-      }
-    });
-
-    Template.expenseForm.events({
+      },
       'click .deleteExpense': function() {
         var documentId = this._id;
         Expenses.remove({ _id: documentId });
@@ -114,25 +127,6 @@ ExpenseData = {};
         Expenses.update({ _id: documentId }, {$set: { name: expenseItem }});
         console.log("Task changed to: " + documentId + ', ' + expenseItem);
       }      
-    });
-
-    Template.Navigation.events({
-      'click #Overview': function() {
-        $(".Overview").show();
-        $(".findPeriod, .addExpense, .addAsset, .Assets, .Expenses").hide();
-      },
-      'click #Home': function() {
-        $(".findPeriod, .Assets, .Expenses").show();
-        $(".Overview, .addExpense, .addAsset").hide();
-      },
-      'click #Asset': function() {
-          $(".addAsset").show();
-          $(".Overview, .addExpense, .findPeriod, .Assets, .Expenses").hide();
-      },
-      'click #Expense': function() {
-          $(".addExpense").show();
-          $(".Overview, .findPeriod, .addAsset, .Assets, .Expenses").hide();
-      }
     });
 }
 if (Meteor.isServer) {
@@ -167,6 +161,13 @@ if (Meteor.isServer) {
     }
   });
 }
-
-
-      
+Router.configure({
+    layoutTemplate: 'main'
+});
+Router.route('/', {
+    template: 'Overview'
+});
+Router.route('/Overview');
+Router.route('/findPeriodForm');
+Router.route('/addAssetForm');
+Router.route('/addExpenseForm');

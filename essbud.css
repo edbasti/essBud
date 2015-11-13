@@ -104,10 +104,10 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
-.findPeriod, .addPeriod, .addExpense, .addAsset {
+/*.findPeriod, .addPeriod, .addExpense, .addAsset {
 	display: none;
 }
-
+*/
 ul {
   list-style: none;
 }
